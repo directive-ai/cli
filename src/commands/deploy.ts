@@ -31,13 +31,13 @@ export const deployCommand = new Command('deploy')
 
       console.log(chalk.blue(`🚀 Deploying agent ${chalk.white(agentName)}...\n`));
 
-      // 1. Vérifier l'authentification
+      // 1. Check authentication
       await ensureAuthenticated();
 
-      // 2. Valider le projet Directive
+      // 2. Validate Directive project
       await validateDirectiveProject();
 
-      // 3. Obtenir le nom du projet et construire l'ID agent
+      // 3. Get project name and build agent ID
       const projectName = await getProjectName();
       const agentType = `${projectName}/${agentName}`;
       const agentId = await getAgentId(agentName, projectName);
@@ -45,25 +45,25 @@ export const deployCommand = new Command('deploy')
       console.log(chalk.gray(`   Agent: ${agentType}`));
       console.log(chalk.gray(`   Agent ID: ${agentId}`));
 
-      // 4. Vérifier que l'agent existe
+      // 4. Check that agent exists
       await validateAgentExists(agentName);
 
-      // 5. Vérifier Git selon la stratégie
+      // 5. Check Git status according to strategy
       await checkGitStatus(options);
 
-      // 6. Compiler l'agent
+      // 6. Compile agent
       console.log(chalk.yellow('📦 Compiling agent...'));
       await compileAgent(agentName);
 
-      // 7. Préparer le bundle pour upload
+      // 7. Prepare bundle for upload
       console.log(chalk.yellow('📋 Preparing bundle...'));
       const bundleData = await prepareBundleForUpload(agentName, options);
 
-      // 8. Uploader via API REST
+      // 8. Upload via REST API
       console.log(chalk.yellow('📤 Uploading to server...'));
       const result = await uploadBundleToServer(agentId, bundleData);
 
-      // 9. Afficher le résultat
+      // 9. Display result
       displayDeploymentResult(result, agentType);
 
     } catch (error) {
@@ -73,7 +73,7 @@ export const deployCommand = new Command('deploy')
   });
 
 /**
- * Vérifie que l'utilisateur est authentifié
+ * Check that user is authenticated
  */
 async function ensureAuthenticated(): Promise<void> {
   const config = await ConfigService.load();
@@ -84,7 +84,7 @@ async function ensureAuthenticated(): Promise<void> {
 }
 
 /**
- * Vérifie qu'on est dans un projet Directive
+ * Check that we are in a Directive project
  */
 async function validateDirectiveProject(): Promise<void> {
   try {
@@ -96,7 +96,7 @@ async function validateDirectiveProject(): Promise<void> {
 }
 
 /**
- * Obtient le nom du projet depuis directive-conf.ts
+ * Get project name from directive-conf.ts
  */
 async function getProjectName(): Promise<string> {
   try {
@@ -115,7 +115,7 @@ async function getProjectName(): Promise<string> {
 }
 
 /**
- * Obtient l'ID de l'agent depuis la base de données via API
+ * Get agent ID from database via API
  */
 async function getAgentId(agentName: string, projectName: string): Promise<string> {
   try {
@@ -136,7 +136,7 @@ async function getAgentId(agentName: string, projectName: string): Promise<strin
 }
 
 /**
- * Vérifie que l'agent existe localement
+ * Check that agent exists locally
  */
 async function validateAgentExists(agentName: string): Promise<void> {
   const agentPath = path.join(process.cwd(), 'agents', agentName);
@@ -153,7 +153,7 @@ async function validateAgentExists(agentName: string): Promise<void> {
 }
 
 /**
- * Vérifie le statut Git selon la stratégie
+ * Check Git status according to strategy
  */
 async function checkGitStatus(options?: DeployOptions): Promise<void> {
   if (options?.strategy === 'ignore') {
