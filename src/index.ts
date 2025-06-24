@@ -14,6 +14,7 @@ import { createAgentCommand } from './commands/create-agent.js';
 import { deployCommand } from './commands/deploy.js';
 import { listCommand } from './commands/list.js';
 import { statusCommand } from './commands/status.js';
+import { deleteCommand } from './commands/delete.js';
 
 const program = new Command();
 
@@ -86,32 +87,7 @@ program.addCommand(requireAuth(createCommand));
 // Commande list (importée depuis ./commands/list.js)
 program.addCommand(requireAuth(listCommand));
 
-// Commande delete
-const deleteCommand = new Command('delete')
-  .description('Supprimer une ressource');
-
-deleteCommand
-  .command('app')
-  .description('Supprimer une application')
-  .argument('<n>', 'Nom de l\'application')
-  .option('--force', 'Forcer la suppression sans confirmation')
-  .action(async (name: string, options) => {
-    console.log(chalk.red('🗑️ Suppression d\'application...'));
-    console.log(`Nom: ${name}`);
-    console.log(chalk.yellow('⚠️ Implémentation en cours - cette commande utilisera l\'API REST'));
-  });
-
-deleteCommand
-  .command('agent')
-  .description('Supprimer un agent')
-  .argument('<n>', 'Nom de l\'agent')
-  .option('--force', 'Forcer la suppression sans confirmation')
-  .action(async (name: string, options) => {
-    console.log(chalk.red('🗑️ Suppression d\'agent...'));
-    console.log(`Nom: ${name}`);
-    console.log(chalk.yellow('⚠️ Implémentation en cours - cette commande utilisera l\'API REST'));
-  });
-
+// Commande delete (importée depuis ./commands/delete.js)
 program.addCommand(requireAuth(deleteCommand));
 
 // Commande deploy

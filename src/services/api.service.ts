@@ -116,7 +116,7 @@ export class ApiService {
     const response: AxiosResponse<ApiResponse> = await this.client.delete(`/api/applications/${nameOrId}`);
     
     if (!response.data.success) {
-      throw new Error(response.data.error || 'Erreur lors de la suppression de l\'application');
+      throw new Error(response.data.error || 'Error deleting application');
     }
   }
 
@@ -169,7 +169,33 @@ export class ApiService {
     const response: AxiosResponse<ApiResponse> = await this.client.delete(`/api/agents/${nameOrId}`);
     
     if (!response.data.success) {
-      throw new Error(response.data.error || 'Erreur lors de la suppression de l\'agent');
+      throw new Error(response.data.error || 'Error deleting agent');
+    }
+  }
+
+  async getAgentVersions(agentId: string): Promise<any[]> {
+    const response: AxiosResponse<ApiResponse<any[]>> = await this.client.get(`/api/deployments/agent/${agentId}/versions`);
+    
+    if (!response.data.success) {
+      throw new Error(response.data.error || 'Error retrieving agent versions');
+    }
+    
+    return response.data.data || [];
+  }
+
+  async deleteAgentVersion(agentId: string, version: string): Promise<void> {
+    const response: AxiosResponse<ApiResponse> = await this.client.delete(`/api/deployments/agent/${agentId}/version/${version}`);
+    
+    if (!response.data.success) {
+      throw new Error(response.data.error || 'Error deleting agent version');
+    }
+  }
+
+  async deleteAllAgentVersions(agentId: string): Promise<void> {
+    const response: AxiosResponse<ApiResponse> = await this.client.delete(`/api/deployments/agent/${agentId}/versions`);
+    
+    if (!response.data.success) {
+      throw new Error(response.data.error || 'Error deleting all agent versions');
     }
   }
 
