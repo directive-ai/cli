@@ -12,6 +12,8 @@ import { configCommand } from './commands/config.js';
 import { createAppCommand } from './commands/create-app.js';
 import { createAgentCommand } from './commands/create-agent.js';
 import { deployCommand } from './commands/deploy.js';
+import { listCommand } from './commands/list.js';
+import { statusCommand } from './commands/status.js';
 
 const program = new Command();
 
@@ -81,30 +83,7 @@ createCommand.addCommand(createAgentCommand);
 
 program.addCommand(requireAuth(createCommand));
 
-// Commande list
-const listCommand = new Command('list')
-  .description('Lister les ressources');
-
-listCommand
-  .command('apps')
-  .description('Lister les applications')
-  .action(async () => {
-    console.log(chalk.blue('📋 Liste des applications'));
-    console.log(chalk.yellow('⚠️ Implémentation en cours - cette commande utilisera l\'API REST'));
-  });
-
-listCommand
-  .command('agents')
-  .description('Lister les agents')
-  .option('-a, --app <app>', 'Filtrer par application')
-  .action(async (options) => {
-    console.log(chalk.blue('📋 Liste des agents'));
-    if (options.app) {
-      console.log(`Application: ${options.app}`);
-    }
-    console.log(chalk.yellow('⚠️ Implémentation en cours - cette commande utilisera l\'API REST'));
-  });
-
+// Commande list (importée depuis ./commands/list.js)
 program.addCommand(requireAuth(listCommand));
 
 // Commande delete
@@ -138,19 +117,8 @@ program.addCommand(requireAuth(deleteCommand));
 // Commande deploy
 program.addCommand(requireAuth(deployCommand));
 
-// Commande status
-program
-  .command('status')
-  .description('Afficher le statut d\'une ressource')
-  .argument('<type>', 'Type de ressource (agent)')
-  .argument('<n>', 'Nom de la ressource')
-  .action(async (type: string, name: string) => {
-    // TODO: Ajouter vérification auth ici
-    console.log(chalk.blue('📊 Statut...'));
-    console.log(`Type: ${type}`);
-    console.log(`Nom: ${name}`);
-    console.log(chalk.yellow('⚠️ Implémentation en cours - cette commande utilisera l\'API REST'));
-  });
+// Commande status (importée depuis ./commands/status.js)
+program.addCommand(requireAuth(statusCommand));
 
 // Commande de test temporaire
 program
