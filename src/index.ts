@@ -20,7 +20,7 @@ const program = new Command();
 
 program
   .name('directive')
-  .description('CLI pour Directive - AI Agents Orchestrator')
+  .description('CLI for Directive - AI Agents Orchestrator')
   .version('1.0.0');
 
 // Gestionnaire global d'erreurs
